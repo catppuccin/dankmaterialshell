@@ -7,6 +7,8 @@ whiskers:
   filename: "catppuccin.json"
   hex_format: "#{{r}}{{g}}{{b}}{{z}}"
 light_flavor: "latte"
+default_flavor: "mocha"
+default_accent: "mauve"
 ---
 {
   "id": "catppuccin",
@@ -20,12 +22,12 @@ light_flavor: "latte"
     "type": "multi",
     "defaults": {
       "dark": {
-        "accent": "mauve",
-        "flavor": "mocha"
+        "accent": "{{ default_accent }}",
+        "flavor": "{{ default_flavor }}"
       },
       "light": {
-        "accent": "mauve",
-        "flavor": "latte"
+        "accent": "{{ default_accent }}",
+        "flavor": "{{ light_flavor }}"
       }
     },
     "flavors": [
@@ -33,7 +35,10 @@ light_flavor: "latte"
       {
         "id": "{{ id }}",
         "name": "{{ flavor.name }}",
-        "dark": {
+        {% if flavor.light -%}
+        "dark": {},
+        {% endif -%}
+        "{% if flavor.dark %}dark{% else %}light{% endif %}": {
           "surface": "{{ flavor.colors.surface0.hex }}",
           "surfaceText": "{{ flavor.colors.text.hex }}",
           "surfaceVariant": "{{ flavor.colors.base.hex }}",
@@ -47,22 +52,10 @@ light_flavor: "latte"
           "error": "{{ flavor.colors.red.hex }}",
           "warning": "{{ flavor.colors.peach.hex }}",
           "info": "{{ flavor.colors.blue.hex }}"
-        },
-        "light": {
-          "surface": "{{ flavors[light_flavor].colors.surface0.hex }}",
-          "surfaceText": "{{ flavors[light_flavor].colors.text.hex }}",
-          "surfaceVariant": "{{ flavors[light_flavor].colors.base.hex }}",
-          "surfaceVariantText": "{{ flavors[light_flavor].colors.subtext0.hex }}",
-          "background": "{{ flavors[light_flavor].colors.base.hex }}",
-          "backgroundText": "{{ flavors[light_flavor].colors.text.hex }}",
-          "outline": "{{ flavors[light_flavor].colors.overlay0.hex }}",
-          "surfaceContainer": "{{ flavors[light_flavor].colors.base.hex }}",
-          "surfaceContainerHigh": "{{ flavors[light_flavor].colors.mantle.hex }}",
-          "surfaceContainerHighest": "{{ flavors[light_flavor].colors.crust.hex }}",
-          "error": "{{ flavors[light_flavor].colors.red.hex }}",
-          "warning": "{{ flavors[light_flavor].colors.peach.hex }}",
-          "info": "{{ flavors[light_flavor].colors.blue.hex }}"
         }
+        {%- if flavor.dark %},
+        "light": {}
+        {%- endif %}
       }{% if not loop.last %},{% endif %}
       {%- endfor %}
     ],
@@ -70,24 +63,16 @@ light_flavor: "latte"
       {%- for accents in ["rosewater", "flamingo", "pink", "mauve", "red", "maroon", "peach", "yellow", "green", "teal", "sky", "sapphire", "blue", "lavender"] %}
       {
         "id": "{{ accents }}",
+        "name": "{{ flavors.mocha.colors[accents].name }}",
         {%- for id, f in flavors %}
-        {%- if id != light_flavor %}
         "{{ id }}": {
           "primary": "{{ f.colors[accents].hex }}",
           "primaryText": "{{ f.colors.base.hex }}",
           "primaryContainer": "{{ f.colors[accents] | mix(color=f.colors.base, amount=0.7) | hex }}",
           "secondary": "{{ f.colors[accents] | mix(color=f.colors.base, amount=0.5) | mod(saturation=20) | hex }}",
           "surfaceTint": "{{ f.colors[accents] | mix(color=f.colors.base, amount=0.7) | hex }}"
-        },
-        {%- endif %}
+        }{% if not loop.last %},{% endif %}
         {%- endfor %}
-        "light": {
-          "primary": "{{ flavors[light_flavor].colors[accents].hex }}",
-          "primaryText": "{{ flavors[light_flavor].colors.base.hex }}",
-          "primaryContainer": "{{ flavors[light_flavor].colors[accents] | mix(color=flavors[light_flavor].colors.base, amount=0.3) | hex }}",
-          "secondary": "{{ flavors[light_flavor].colors[accents] | mix(color=flavors[light_flavor].colors.base, amount=0.5) | mod(saturation=20) | hex }}",
-          "surfaceTint": "{{ flavors[light_flavor].colors[accents] | mix(color=flavors[light_flavor].colors.base, amount=0.3) | hex }}"
-        }
       }{% if not loop.last %},{% endif %}
       {%- endfor %}
     ]
