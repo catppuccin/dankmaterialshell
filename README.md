@@ -36,7 +36,7 @@
 
 ## Usage
 
-1. Download the JSON file.
+1. Download the [`catppuccin.json`](catppuccin.json) file.
 2. Open the settings of DMS and go to **Personalization** > **Theme & Colors**.
 3. Select the **Custom** option under **Theme Color**.
 4. Select the downloaded file.
