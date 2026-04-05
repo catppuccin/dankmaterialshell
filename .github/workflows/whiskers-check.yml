@@ -8,8 +8,9 @@ on:
     branches: [main]
 
 jobs:
-  run:
-    uses: catppuccin/actions/.github/workflows/whiskers-check.yml@v1
-    with:
-      args: dankmaterialshell.tera
-    secrets: inherit
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: catppuccin/setup-whiskers@v2
+      - run: whiskers dankmaterialshell.tera --check catppuccin.json
