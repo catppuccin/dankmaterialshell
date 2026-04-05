@@ -37,8 +37,7 @@
 ## Usage
 
 > [!IMPORTANT]
-> When choosing flavors, there is a Latte option. This does not currently work.
-> To use the Latte flavor, scroll down to **Color Mode** and turn **Light Mode** on.
+> The Latte flavor is only availablee when **Light Mode** is turned on.
 
 1. Download the [`catppuccin.json`](catppuccin.json) file.
 2. Open the settings of DMS and go to **Personalization** > **Theme & Colors**.
